@@ -45,7 +45,6 @@ auto InputSettings::create() -> void {
   assignMouse2.onActivate([&] { assignMouseInput(1); });
   assignMouse3.onActivate([&] { assignMouseInput(2); });
   assignButton.setText("Assign").onActivate([&] {
-    clearButton.doActivate();
     assignMapping(mappingList.selected().cell(0));
   });
   clearButton.setText("Clear").onActivate([&] {
@@ -143,6 +142,8 @@ auto InputSettings::refreshMappings() -> void {
 }
 
 auto InputSettings::assignMapping(TableViewCell cell) -> void {
+  if(activeMapping) refreshMappings();
+
   inputManager.poll();  //clear any pending events first
 
   for(auto mapping : mappingList.batched()) {
