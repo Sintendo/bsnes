@@ -30,7 +30,6 @@ auto HotkeySettings::create() -> void {
   if(settings.input.hotkey.logic == "or") logicOR.setChecked().doActivate();
   inputSink.setFocusable();
   assignButton.setText("Assign").onActivate([&] {
-    clearButton.doActivate();
     assignMapping(mappingList.selected().cell(0));
   });
   clearButton.setText("Clear").onActivate([&] {
@@ -76,6 +75,8 @@ auto HotkeySettings::refreshMappings() -> void {
 }
 
 auto HotkeySettings::assignMapping(TableViewCell cell) -> void {
+  if(activeMapping) refreshMappings();
+
   inputManager.poll();  //clear any pending events first
 
   for(auto mapping : mappingList.batched()) {
